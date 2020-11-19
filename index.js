@@ -33,14 +33,41 @@ const addItem = (request, response) => {
   );
 };
 
-app
-  .route("/items")
-  // GET endpoint
-  .get(getItems)
-  // POST endpoint
-  .post(addItem);
+const deleteItem = (request, response) => {
+  const { id, type, place, amount, date } = request.body;
+  pool.query(`DELETE FROM spendingitems WHERE id = ${id}`, (error) => {
+    if (error) {
+      throw error;
+    }
+    response.status(201).json({ status: "success", message: "item deleted." });
+  });
+};
+
+const updateItem = (request, response) => {
+  const { id, type, place, amount, date } = request.body;
+  pool.query(
+    `UPDATE spendingitems
+    SET type = '${type}',
+    place = '${place}',
+    amount = ${amount},
+    date = '${date}'
+    WHERE id = ${id};`,
+    // [id, type, place, amount, date],
+    (error) => {
+      if (error) {
+        throw error;
+      }
+      response.status(201).json({ status: "success", message: "item updated" });
+    }
+  );
+};
+
+app.route("/items").get(getItems);
+app.route("/update").post(updateItem);
+app.route("/delete").delete(deleteItem);
+app.route("/add").post(addItem);
 
 // Start server
 app.listen(process.env.PORT || 3002, () => {
-  console.log(`Server listening`);
+  console.log(`Server listening `);
 });
