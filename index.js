@@ -9,8 +9,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const getBooks = (request, response) => {
-  pool.query("SELECT * FROM books", (error, results) => {
+const getItems = (request, response) => {
+  pool.query("SELECT * FROM spendingitems", (error, results) => {
     if (error) {
       throw error;
     }
@@ -18,27 +18,27 @@ const getBooks = (request, response) => {
   });
 };
 
-const addBook = (request, response) => {
-  const { author, title } = request.body;
+const addItem = (request, response) => {
+  const { type, place, amount, date } = request.body;
 
   pool.query(
-    "INSERT INTO books (author, title) VALUES ($1, $2)",
-    [author, title],
+    "INSERT INTO spendingitems (type, place, amount, date) VALUES ($1, $2, $3, $4)",
+    [type, place, amount, date],
     (error) => {
       if (error) {
         throw error;
       }
-      response.status(201).json({ status: "success", message: "Book added." });
+      response.status(201).json({ status: "success", message: "item added." });
     }
   );
 };
 
 app
-  .route("/books")
+  .route("/items")
   // GET endpoint
-  .get(getBooks)
+  .get(getItems)
   // POST endpoint
-  .post(addBook);
+  .post(addItem);
 
 // Start server
 app.listen(process.env.PORT || 3002, () => {

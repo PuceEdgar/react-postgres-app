@@ -1,8 +1,8 @@
 {
-"name": "books-api",
+"name": "postgres-api",
   "version": "1.0.0",
   "private": true,
-  "description": "Books API",
+  "description": "postgres API",
   "main": "index.js",
   "engines": {
     "node": "14.x"
