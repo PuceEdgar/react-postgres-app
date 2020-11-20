@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+var path = require("path");
 const cors = require("cors");
 const { pool } = require("./config");
 
@@ -28,6 +29,7 @@ const addItem = (request, response) => {
       if (error) {
         throw error;
       }
+
       response.status(201).json({ status: "success", message: "item added." });
     }
   );
@@ -67,6 +69,12 @@ app.route("/update").post(updateItem);
 app.route("/delete").delete(deleteItem);
 app.route("/add").post(addItem);
 
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+// Handle React routing, return all requests to React app
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "/client/build", "index.html"));
+});
 // Start server
 app.listen(process.env.PORT || 3002, () => {
   console.log(`Server listening `);
