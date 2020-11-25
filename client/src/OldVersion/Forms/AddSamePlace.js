@@ -2,16 +2,19 @@ import React, { useState } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import TextField from "@material-ui/core/TextField";
+import moment from "moment";
 
 const AddSamePlaceForm = (props) => {
   const { handleSubmit, item, setShow } = props;
   const [selectedDate, handleDateChange] = useState(new Date());
   const [state, setState] = useState({
-    id: 0,
     type: item.type,
     place: item.place,
     amount: 0,
     date: new Date(),
+    month: 0,
+    year: 0,
+    yearmonth: "",
   });
 
   function handleChange(event) {
@@ -21,6 +24,10 @@ const AddSamePlaceForm = (props) => {
   }
   function submitForm() {
     state.date = selectedDate.toLocaleDateString();
+    state.year = moment(selectedDate).year();
+    state.month = moment(selectedDate).month() + 1;
+    state.yearmonth = `${state.year}-${state.month}`;
+
     handleSubmit(state);
     setShow(false);
   }
