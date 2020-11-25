@@ -12,7 +12,7 @@ import Total, { GetTotal } from "../Utilities/Total";
 import Paper from "@material-ui/core/Paper";
 import { AddItemButton } from "../ModalButtons";
 import { GetItemsByType } from "../Utilities/Functions";
-import { getData } from "../Data/ApiCalls";
+import { getData, addData, updateData, deleteData } from "../Data/ApiCalls";
 import moment from "moment";
 
 function TabPanel(props) {
@@ -66,27 +66,22 @@ export default function MaterialTabs() {
   useEffect(() => {
     getData().then((val) => {
       const spendingMonth = val.filter((item, i) => {
-        return new Date(item.date).getMonth() === moment().month();
+        return moment(item.date).month() === moment().month();
       });
+
       setItems(spendingMonth);
     });
   }, []);
 
   function addItem(data) {
-    fetch("/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
+    addData(data)
       .then((data) => {
         if (data.status === "success") {
           getData().then((val) => {
             const spendingMonth = val.filter((item, i) => {
               return new Date(item.date).getMonth() === moment().month();
             });
+
             setItems(spendingMonth);
           });
         }
@@ -96,55 +91,19 @@ export default function MaterialTabs() {
       });
   }
 
-  // function addData(data) {
-  //   fetch("/api/additem", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const sortedActivities = data.sort(
-  //         (a, b) => new Date(b.date) - new Date(a.date)
-  //       );
-  //       const spendingMonth = sortedActivities.filter((item, i) => {
-  //         return new Date(item.date).getMonth() === moment().month();
-  //       });
-  //       setItems(spendingMonth);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // }
   function handleSubmit(item) {
-    // let idArray = items.map((item) => {
-    //   return item.id;
-    // });
-
-    // var maxId = Math.max(...idArray);
-    // item.id = maxId + 1;
-
     addItem(item);
-    // addData(item);
   }
 
-  function updateData(data) {
-    fetch("/update", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
+  function updateItem(data) {
+    updateData(data)
       .then((data) => {
         if (data.status === "success") {
           getData().then((val) => {
             const spendingMonth = val.filter((item, i) => {
               return new Date(item.date).getMonth() === moment().month();
             });
+
             setItems(spendingMonth);
           });
         }
@@ -154,21 +113,15 @@ export default function MaterialTabs() {
       });
   }
 
-  function deleteData(data) {
-    fetch("/delete", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
+  function deleteItem(data) {
+    deleteData(data)
       .then((data) => {
         if (data.status === "success") {
           getData().then((val) => {
             const spendingMonth = val.filter((item, i) => {
               return new Date(item.date).getMonth() === moment().month();
             });
+
             setItems(spendingMonth);
           });
         }
@@ -218,13 +171,14 @@ export default function MaterialTabs() {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <AddItemButton handleSubmit={handleSubmit} type="groceries">
-            Add Item
-          </AddItemButton>
+          <AddItemButton
+            handleSubmit={handleSubmit}
+            type="groceries"
+          ></AddItemButton>
           <MaterialTable
             items={groceries}
-            updateData={updateData}
-            deleteData={deleteData}
+            updateData={updateItem}
+            deleteData={deleteItem}
             handleSubmit={handleSubmit}
           />
           <Paper className="border m-3">
@@ -237,8 +191,8 @@ export default function MaterialTabs() {
           </AddItemButton>
           <MaterialTable
             items={car}
-            updateData={updateData}
-            deleteData={deleteData}
+            updateData={updateItem}
+            deleteData={deleteItem}
             handleSubmit={handleSubmit}
           />
           <Paper className="border m-3">
@@ -251,8 +205,8 @@ export default function MaterialTabs() {
           </AddItemButton>
           <MaterialTable
             items={house}
-            updateData={updateData}
-            deleteData={deleteData}
+            updateData={updateItem}
+            deleteData={deleteItem}
             handleSubmit={handleSubmit}
           />
           <Paper className="border m-3">
@@ -265,8 +219,8 @@ export default function MaterialTabs() {
           </AddItemButton>
           <MaterialTable
             items={other}
-            updateData={updateData}
-            deleteData={deleteData}
+            updateData={updateItem}
+            deleteData={deleteItem}
             handleSubmit={handleSubmit}
           />
           <Paper className="border m-3">

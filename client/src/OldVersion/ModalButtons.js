@@ -3,6 +3,7 @@ import ModalWindow from "./Components/ModalWindow";
 import AddItemForm from "./Forms/AddItemForm";
 import EditItemForm from "./Forms/EditItemForm";
 import AddSamePlaceForm from "./Forms/AddSamePlace";
+import SetIncommingForm from "./Forms/SetIncommingForm";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
 import * as colors from "@material-ui/core/colors/";
@@ -67,6 +68,21 @@ export function AddSamePlaceButton(props) {
           handleSubmit={handleSubmit}
         />
       }
+    />
+  );
+}
+
+export function SetIncommingButton(props) {
+  const { setInc } = props;
+  return (
+    <ModalWindow
+      name="add"
+      buttonName="Set Incomming"
+      headerName="Incomming"
+      size="large"
+      variant="contained"
+      classDescription="float-right"
+      bodyComponent={<SetIncommingForm setInc={setInc} />}
     />
   );
 }

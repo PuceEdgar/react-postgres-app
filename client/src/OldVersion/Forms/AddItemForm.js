@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import TextField from "@material-ui/core/TextField";
+import moment from "moment";
 
 const AddItemForm = (props) => {
   const { handleSubmit, type, setShow } = props;
   let initialState = {
-    // id: 0,
     type: type,
     place: "",
     amount: 0,
     date: new Date(),
+    month: 0,
+    year: 0,
+    yearmonth: "",
   };
   const [form, setForm] = useState(initialState);
   const [selectedDate, handleDateChange] = useState(new Date());
@@ -23,6 +26,10 @@ const AddItemForm = (props) => {
 
   function submitForm() {
     form.date = selectedDate.toLocaleDateString();
+    form.year = moment(selectedDate).year();
+    form.month = moment(selectedDate).month() + 1;
+    form.yearmonth = `${form.year}-${form.month}`;
+
     handleSubmit(form);
     setShow(false);
     // setForm(initialState);
@@ -57,7 +64,7 @@ const AddItemForm = (props) => {
               <DatePicker
                 autoOk
                 label="Choose Date"
-                format="MM/dd/yyyy"
+                format="dd/MM/yyyy"
                 // clearable
                 disableFuture
                 value={selectedDate}

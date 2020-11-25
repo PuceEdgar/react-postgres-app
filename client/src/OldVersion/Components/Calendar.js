@@ -13,7 +13,7 @@ function DayTable(props) {
       <tr key={i}>
         <td>{item.type}</td>
         <td>{item.place}</td>
-        <td>{item.date}</td>
+        <td>{moment(item.date).format("DD/MM/YYYY")}</td>
         <td>{item.amount}</td>
       </tr>
     );

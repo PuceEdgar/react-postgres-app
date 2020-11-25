@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import TextField from "@material-ui/core/TextField";
+import moment from "moment";
 
 const EditItemForm = (props) => {
   const { item, editItem, setShow } = props;
 
   const [form, setForm] = useState(item);
-  const [selectedDate, handleDateChange] = useState(new Date(item.date));
+  const [selectedDate, handleDateChange] = useState(item.date);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -15,7 +16,10 @@ const EditItemForm = (props) => {
     setForm({ ...form, [name]: value });
   }
   function submitForm() {
-    form.date = selectedDate.toLocaleDateString();
+    form.date = new Date(selectedDate).toLocaleString();
+    form.year = moment(selectedDate).year();
+    form.month = moment(selectedDate).month() + 1;
+    form.yearmonth = `${form.year}-${form.month}`;
     setShow(false);
     editItem(form);
   }
@@ -48,8 +52,8 @@ const EditItemForm = (props) => {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <DatePicker
                 autoOk
-                label="Date"
-                format="MM/dd/yyyy"
+                label="Choose Date"
+                // format="dd/MM/yyyy"
                 disableFuture
                 value={selectedDate}
                 onChange={handleDateChange}
