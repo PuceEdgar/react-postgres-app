@@ -3,9 +3,8 @@ import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./index.css";
-//  import OldApp from "./OldVersion/OldApp";
 import * as serviceWorker from "./serviceWorker";
-import Navigation from "./Navigation";
+import Navigation from "./Components/Navigation";
 
 ReactDOM.render(<Navigation />, document.getElementById("root"));
 

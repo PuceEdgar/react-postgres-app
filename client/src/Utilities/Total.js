@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
 import { getIncomming } from "../Data/ApiCalls";
-import { SetIncommingButton } from "../ModalButtons";
+import { SetIncommingButton } from "../Components/ModalButtons";
 import moment from "moment";
 
 export function GetTotal(data) {

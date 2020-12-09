@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import DisplayCalendar from "./OldVersion/Components/Calendar";
-import MaterialTabs from "./OldVersion/Components/MaterialTabs";
+import DisplayCalendar from "./Calendar";
+import MaterialTabs from "./MaterialTabs";
 
 export default function Navigation() {
   return (

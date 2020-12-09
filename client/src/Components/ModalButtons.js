@@ -1,9 +1,9 @@
 import React from "react";
-import ModalWindow from "./Components/ModalWindow";
-import AddItemForm from "./Forms/AddItemForm";
-import EditItemForm from "./Forms/EditItemForm";
-import AddSamePlaceForm from "./Forms/AddSamePlace";
-import SetIncommingForm from "./Forms/SetIncommingForm";
+import ModalWindow from "./ModalWindow";
+import AddItemForm from "../Forms/AddItemForm";
+import EditItemForm from "../Forms/EditItemForm";
+import AddSamePlaceForm from "../Forms/AddSamePlace";
+import SetIncommingForm from "../Forms/SetIncommingForm";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
 import * as colors from "@material-ui/core/colors/";
@@ -53,18 +53,19 @@ export function AddItemButton(props) {
 }
 
 export function AddSamePlaceButton(props) {
-  const { samePlaceItems, handleSubmit } = props;
+  const { place, type, handleSubmit } = props;
   return (
     <ModalWindow
       name="addSameItem"
       buttonName="Add item"
-      headerName={`Add new ${samePlaceItems[0].place} item`}
+      headerName={`Add new ${place} item`}
       variant="contained"
       size="small"
       classDescription="btn btn-outline-success float-center"
       bodyComponent={
         <AddSamePlaceForm
-          item={samePlaceItems[0]}
+          place={place}
+          type={type}
           handleSubmit={handleSubmit}
         />
       }

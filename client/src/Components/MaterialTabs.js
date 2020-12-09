@@ -10,10 +10,11 @@ import Box from "@material-ui/core/Box";
 import MaterialTable from "./MaterialTable";
 import Total, { GetTotal } from "../Utilities/Total";
 import Paper from "@material-ui/core/Paper";
-import { AddItemButton } from "../ModalButtons";
+import { AddItemButton } from "./ModalButtons";
 import { GetItemsByType } from "../Utilities/Functions";
 import { getData, addData, updateData, deleteData } from "../Data/ApiCalls";
 import moment from "moment";
+import { GROCERIES, CAR, HOUSE, OTHER } from "../Constants/ItemTypes";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -55,6 +56,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function populateData(setItems) {
+  getData().then((val) => {
+    const spendingMonth = val.filter((item, i) => {
+      return moment(item.date).month() === moment().month();
+    });
+
+    setItems(spendingMonth);
+  });
+}
+
 export default function MaterialTabs() {
   const classes = useStyles();
   const theme = useTheme();
@@ -64,26 +75,21 @@ export default function MaterialTabs() {
   const incomming = 1500;
 
   useEffect(() => {
-    getData().then((val) => {
-      const spendingMonth = val.filter((item, i) => {
-        return moment(item.date).month() === moment().month();
-      });
+    populateData(setItems);
+    // getData().then((val) => {
+    //   const spendingMonth = val.filter((item, i) => {
+    //     return moment(item.date).month() === moment().month();
+    //   });
 
-      setItems(spendingMonth);
-    });
+    //   setItems(spendingMonth);
+    // });
   }, []);
 
   function addItem(data) {
     addData(data)
-      .then((data) => {
-        if (data.status === "success") {
-          getData().then((val) => {
-            const spendingMonth = val.filter((item, i) => {
-              return new Date(item.date).getMonth() === moment().month();
-            });
-
-            setItems(spendingMonth);
-          });
+      .then((res) => {
+        if (res.status === "success") {
+          populateData(setItems);
         }
       })
       .catch((error) => {
@@ -91,21 +97,11 @@ export default function MaterialTabs() {
       });
   }
 
-  function handleSubmit(item) {
-    addItem(item);
-  }
-
   function updateItem(data) {
     updateData(data)
-      .then((data) => {
-        if (data.status === "success") {
-          getData().then((val) => {
-            const spendingMonth = val.filter((item, i) => {
-              return new Date(item.date).getMonth() === moment().month();
-            });
-
-            setItems(spendingMonth);
-          });
+      .then((res) => {
+        if (res.status === "success") {
+          populateData(setItems);
         }
       })
       .catch((error) => {
@@ -115,15 +111,9 @@ export default function MaterialTabs() {
 
   function deleteItem(data) {
     deleteData(data)
-      .then((data) => {
-        if (data.status === "success") {
-          getData().then((val) => {
-            const spendingMonth = val.filter((item, i) => {
-              return new Date(item.date).getMonth() === moment().month();
-            });
-
-            setItems(spendingMonth);
-          });
+      .then((res) => {
+        if (res.status === "success") {
+          populateData(setItems);
         }
       })
       .catch((error) => {
@@ -131,13 +121,13 @@ export default function MaterialTabs() {
       });
   }
 
-  const groceries = GetItemsByType(items, "groceries");
+  const groceries = GetItemsByType(items, GROCERIES);
 
-  const car = GetItemsByType(items, "car");
+  const car = GetItemsByType(items, CAR);
 
-  const house = GetItemsByType(items, "house");
+  const house = GetItemsByType(items, HOUSE);
 
-  const other = GetItemsByType(items, "other");
+  const other = GetItemsByType(items, OTHER);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -172,56 +162,56 @@ export default function MaterialTabs() {
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
           <AddItemButton
-            handleSubmit={handleSubmit}
+            handleSubmit={addItem}
             type="groceries"
           ></AddItemButton>
           <MaterialTable
             items={groceries}
             updateData={updateItem}
             deleteData={deleteItem}
-            handleSubmit={handleSubmit}
+            handleSubmit={addItem}
           />
           <Paper className="border m-3">
             <h3 className="text-center p-2">Total: {GetTotal(groceries)}</h3>
           </Paper>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <AddItemButton handleSubmit={handleSubmit} type="car">
+          <AddItemButton handleSubmit={addItem} type="car">
             Add Item
           </AddItemButton>
           <MaterialTable
             items={car}
             updateData={updateItem}
             deleteData={deleteItem}
-            handleSubmit={handleSubmit}
+            handleSubmit={addItem}
           />
           <Paper className="border m-3">
             <h4 className="text-center p-2">Total: {GetTotal(car)}</h4>
           </Paper>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <AddItemButton handleSubmit={handleSubmit} type="house">
+          <AddItemButton handleSubmit={addItem} type="house">
             Add Item
           </AddItemButton>
           <MaterialTable
             items={house}
             updateData={updateItem}
             deleteData={deleteItem}
-            handleSubmit={handleSubmit}
+            handleSubmit={addItem}
           />
           <Paper className="border m-3">
             <h4 className="text-center p-2">Total: {GetTotal(house)}</h4>
           </Paper>
         </TabPanel>
         <TabPanel value={value} index={3} dir={theme.direction}>
-          <AddItemButton handleSubmit={handleSubmit} type="other">
+          <AddItemButton handleSubmit={addItem} type="other">
             Add Item
           </AddItemButton>
           <MaterialTable
             items={other}
             updateData={updateItem}
             deleteData={deleteItem}
-            handleSubmit={handleSubmit}
+            handleSubmit={addItem}
           />
           <Paper className="border m-3">
             <h4 className="text-center p-2">Total: {GetTotal(other)}</h4>

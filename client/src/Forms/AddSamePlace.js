@@ -5,11 +5,11 @@ import TextField from "@material-ui/core/TextField";
 import moment from "moment";
 
 const AddSamePlaceForm = (props) => {
-  const { handleSubmit, item, setShow } = props;
+  const { handleSubmit, type, place, setShow } = props;
   const [selectedDate, handleDateChange] = useState(new Date());
   const [state, setState] = useState({
-    type: item.type,
-    place: item.place,
+    type: type,
+    place: place,
     amount: 0,
     date: new Date(),
     month: 0,

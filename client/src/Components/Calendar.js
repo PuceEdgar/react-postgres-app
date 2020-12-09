@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { GetTotal } from "../Utilities/Total";
-import ModalWindow from "../Components/ModalWindow";
+import ModalWindow from "./ModalWindow";
 import { Paper } from "@material-ui/core";
 import { getData } from "../Data/ApiCalls";
 

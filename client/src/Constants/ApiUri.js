@@ -1,0 +1,9 @@
+export const GET_INCOMMING = "/getincomming";
+export const SET_INCOMMING = "/setincomming";
+export const UPDATE_INCOMMING = "/updateIncomming";
+export const GET_DATA = "/items";
+export const ADD_DATA = "/add";
+export const UPDATE_DATA = "/update";
+export const DELETE_DATA = "/delete";
+export const POST = "POST";
+export const DELETE = "DELETE";

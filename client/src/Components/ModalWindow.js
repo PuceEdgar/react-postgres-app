@@ -46,7 +46,6 @@ const ModalButton = (props) => {
     );
   } else {
     return (
-      
       <button
         style={style}
         startIcon={startIcon}
@@ -58,7 +57,6 @@ const ModalButton = (props) => {
       >
         {buttonName}
       </button>
-      
     );
   }
 };
