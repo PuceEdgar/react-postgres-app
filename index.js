@@ -12,6 +12,9 @@ const {
   getIncomming,
   setIncomming,
   updateIncomming,
+  updateRemaining,
+  getRemaining,
+  getPreviousRemaining,
 } = require("./dbQueries/monthQueries");
 // const { pool } = require("./config");
 
@@ -29,6 +32,9 @@ app.route("/add").post(addItem);
 app.route("/getincomming").post(getIncomming);
 app.route("/setincomming").post(setIncomming);
 app.route("/updateincomming").post(updateIncomming);
+app.route("/getremaining").post(getRemaining);
+app.route("/getpreviousremaining").post(getPreviousRemaining);
+app.route("/updateremaining").post(updateRemaining);
 
 app.use(express.static(path.join(__dirname, "/client/build")));
 

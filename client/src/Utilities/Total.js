@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Paper from "@material-ui/core/Paper";
-import { getIncomming } from "../Data/ApiCalls";
+import {
+  getIncomming,
+  updateRemaining,
+  getPreviousRemaining,
+} from "../Data/ApiCalls";
 import { SetIncommingButton } from "../Components/ModalButtons";
 import moment from "moment";
 
@@ -13,19 +17,33 @@ export function GetTotal(data) {
   return total;
 }
 
+function UpdateRemainingAmount(yearmonth, left) {
+  const value = {
+    yearmonth: moment(yearmonth).format("YYYY-MM"),
+    remaining: left,
+  };
+  updateRemaining(value);
+}
+
 const Total = (props) => {
   const { items } = props;
   const [incomming, setIncomming] = useState(0);
   const totalSpent = GetTotal(items);
-
+  const yearmonth = `${moment().year()}-${moment().month() + 1}`;
+  const previousMonth = `${moment().year()}-${moment().month()}`;
   const left = incomming - totalSpent;
-
+  UpdateRemainingAmount(yearmonth, left);
   useEffect(() => {
-    const yearmonth = `${moment().year()}-${moment().month() + 1}`;
-    getIncomming(yearmonth).then((val) => {
-      setIncomming(val);
+    let previousRemaining = 0;
+    getPreviousRemaining(previousMonth).then((val) => {
+      previousRemaining = val;
     });
-  }, []);
+    getIncomming(yearmonth).then((val) => {
+      const totalBudget = parseInt(previousRemaining) + parseInt(val);
+
+      setIncomming(totalBudget);
+    });
+  }, [incomming]);
   let classname;
   if (left < 0) {
     classname = "alert alert-danger text-center";
@@ -44,7 +62,7 @@ const Total = (props) => {
         <div className="col-3">
           <Paper>
             <h5 className="alert alert-success text-center">
-              Incomming: {incomming}
+              Budget: {incomming}
             </h5>
           </Paper>
         </div>

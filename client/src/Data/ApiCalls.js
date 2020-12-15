@@ -2,6 +2,9 @@ import {
   GET_INCOMMING,
   SET_INCOMMING,
   UPDATE_INCOMMING,
+  GET_REMAINING,
+  UPDATE_REMAINING,
+  GET_PREVIOUS_REMAINING,
   GET_DATA,
   ADD_DATA,
   UPDATE_DATA,
@@ -40,8 +43,8 @@ export async function getIncomming(yearmonth) {
   };
 
   const result = await makeApiCall(POST, month, GET_INCOMMING);
-
-  return typeof result[0] === "undefined" ? 0 : result[0].incomming;
+  console.log(result[0]);
+  return typeof result[0] === "undefined" ? -1 : result[0].incomming;
 }
 
 export async function setIncomming(value) {
@@ -50,6 +53,29 @@ export async function setIncomming(value) {
 
 export async function updateIncomming(value) {
   return await makeApiCall(POST, value, UPDATE_INCOMMING);
+}
+
+export async function getRemaining(yearmonth) {
+  const month = {
+    yearmonth: yearmonth,
+  };
+
+  const result = await makeApiCall(POST, month, GET_REMAINING);
+
+  return typeof result[0] === "undefined" ? 0 : result[0].remaining_amount;
+}
+export async function getPreviousRemaining(yearmonth) {
+  const month = {
+    yearmonth: yearmonth,
+  };
+
+  const result = await makeApiCall(POST, month, GET_REMAINING);
+
+  return typeof result[0] === "undefined" ? 0 : result[0].remaining_amount;
+}
+
+export async function updateRemaining(value) {
+  return await makeApiCall(POST, value, UPDATE_REMAINING);
 }
 
 export async function addData(data) {

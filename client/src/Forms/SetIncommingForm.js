@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
+import moment, { months } from "moment";
 import TextField from "@material-ui/core/TextField";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import { getIncomming, setIncomming, updateIncomming } from "../Data/ApiCalls";
+import {
+  getIncomming,
+  setIncomming,
+  updateIncomming,
+  getPreviousRemaining,
+} from "../Data/ApiCalls";
 
 const SetIncommingForm = (props) => {
   const { setShow, setInc } = props;
@@ -14,12 +19,19 @@ const SetIncommingForm = (props) => {
 
   useEffect(() => {
     const yearmonth = moment().format("YYYY-MM");
+    let budget = 0;
     getIncomming(yearmonth).then((val) => {
-      if (val > 0) {
+      if (val >= 0) {
         setExists(true);
+        setIncom(val);
       }
-      setIncom(val);
+      budget = val;
     });
+    const prevMonth = moment().subtract(1, "months").format("YYYY-MM");
+    getPreviousRemaining(prevMonth).then((prevVal) => {
+      budget = budget + prevVal;
+    });
+    setIncom(budget);
   }, []);
 
   function submitForm() {
@@ -47,7 +59,7 @@ const SetIncommingForm = (props) => {
             <TextField
               name="incomming"
               id="incomming"
-              label="Incomming"
+              label="Budget"
               value={incomming}
               onChange={(ev) => setIncom(ev.target.value)}
             />

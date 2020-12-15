@@ -1,6 +1,9 @@
 export const GET_INCOMMING = "/getincomming";
 export const SET_INCOMMING = "/setincomming";
 export const UPDATE_INCOMMING = "/updateIncomming";
+export const UPDATE_REMAINING = "/updateremaining";
+export const GET_REMAINING = "/getremaining";
+export const GET_PREVIOUS_REMAINING = "/getpreviousremaining";
 export const GET_DATA = "/items";
 export const ADD_DATA = "/add";
 export const UPDATE_DATA = "/update";
