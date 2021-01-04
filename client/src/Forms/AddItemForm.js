@@ -27,8 +27,8 @@ const AddItemForm = (props) => {
   function submitForm() {
     form.date = selectedDate.toLocaleDateString();
     form.year = moment(selectedDate).year();
-    form.month = moment(selectedDate).month() + 1;
-    form.yearmonth = `${form.year}-${form.month}`;
+    form.month = moment(selectedDate).format("MM");
+    form.yearmonth = moment().format("YYYY-MM");
 
     handleSubmit(form);
     setShow(false);

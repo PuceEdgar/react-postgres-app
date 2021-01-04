@@ -29,8 +29,8 @@ const Total = (props) => {
   const { items } = props;
   const [incomming, setIncomming] = useState(0);
   const totalSpent = GetTotal(items);
-  const yearmonth = `${moment().year()}-${moment().month() + 1}`;
-  const previousMonth = `${moment().year()}-${moment().month()}`;
+  const yearmonth = moment().format("YYYY-MM");
+  let previousMonth = moment().subtract(1, "months").format("YYYY-MM");
   const left = incomming - totalSpent;
   UpdateRemainingAmount(yearmonth, left);
   useEffect(() => {

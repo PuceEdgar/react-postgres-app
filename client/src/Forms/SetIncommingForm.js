@@ -19,6 +19,7 @@ const SetIncommingForm = (props) => {
 
   useEffect(() => {
     const yearmonth = moment().format("YYYY-MM");
+
     let budget = 0;
     getIncomming(yearmonth).then((val) => {
       if (val >= 0) {

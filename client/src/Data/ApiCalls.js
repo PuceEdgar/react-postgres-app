@@ -43,7 +43,7 @@ export async function getIncomming(yearmonth) {
   };
 
   const result = await makeApiCall(POST, month, GET_INCOMMING);
-  console.log(result[0]);
+
   return typeof result[0] === "undefined" ? -1 : result[0].incomming;
 }
 
