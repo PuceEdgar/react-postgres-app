@@ -4,6 +4,7 @@ import { GetTotal } from "../Utilities/Total";
 import ModalWindow from "./ModalWindow";
 import { Paper } from "@material-ui/core";
 import { getData } from "../Data/ApiCalls";
+import { CAR, GROCERIES, HOUSE, OTHER } from "../Constants/ItemTypes";
 
 function DayTable(props) {
   const { items } = props;
@@ -32,6 +33,72 @@ function DayTable(props) {
       <tbody>{tableRows}</tbody>
     </table>
   );
+}
+
+function WeekTable(props) {
+  const { items } = props;
+
+  const groceries = items.filter((gr, i) => {
+    return gr.type === GROCERIES;
+  });
+
+  const groceriesTotals = GetTypeTotals(items, GROCERIES);
+  const houseTotals = GetTypeTotals(items, HOUSE);
+  const otherTotals = GetTypeTotals(items, OTHER);
+  const carTotals = GetTypeTotals(items, CAR);
+
+  return (
+    <table className="table">
+      <thead>
+        <tr>
+          <th scope="col">Type</th>
+          <th scope="col">Place</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {groceriesTotals}
+        {carTotals}
+        {houseTotals}
+        {otherTotals}
+      </tbody>
+    </table>
+  );
+}
+
+function GetTypeTotals(items, TYPE) {
+  const list = items.filter((gr, i) => {
+    return gr.type === TYPE;
+  });
+
+  if (TYPE === GROCERIES) {
+    return (
+      <tr>
+        <td>{GROCERIES}</td>
+        <td></td>
+        <td>{GetTotal(list)}</td>
+      </tr>
+    );
+  } else {
+    const places = list.map((t, i) => {
+      return t.place;
+    });
+    let uniquePlaces = [...new Set(places)];
+
+    const totals = uniquePlaces.map((it, i) => {
+      const placeTotal = list.filter((h, i) => {
+        return h.place === it;
+      });
+      return (
+        <tr>
+          <td>{TYPE}</td>
+          <td>{it}</td>
+          <td>{GetTotal(placeTotal)}</td>
+        </tr>
+      );
+    });
+    return totals;
+  }
 }
 
 function Table(props) {
@@ -143,6 +210,7 @@ function TableBody(props) {
       let weekStyle = {
         backgroundColor: "#ff8a65",
       };
+
       return (
         <tr>
           {td}
@@ -153,7 +221,7 @@ function TableBody(props) {
               buttonName={weekSpending}
               headerName={`Total spent: ${weekSpending}`}
               classDescription="btn btn-block text-dark"
-              bodyComponent={<DayTable items={weekItems.flat()} />}
+              bodyComponent={<WeekTable items={weekItems.flat()} />}
             />
           </td>
         </tr>
