@@ -25,8 +25,8 @@ const AddSamePlaceForm = (props) => {
   function submitForm() {
     state.date = selectedDate.toLocaleDateString();
     state.year = moment(selectedDate).year();
-    state.month = moment(selectedDate).month() + 1;
-    state.yearmonth = `${state.year}-${state.month}`;
+    state.month = moment(selectedDate).format("MM");
+    state.yearmonth = moment().format("YYYY-MM");
 
     handleSubmit(state);
     setShow(false);

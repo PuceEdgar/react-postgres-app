@@ -79,6 +79,7 @@ export async function updateRemaining(value) {
 }
 
 export async function addData(data) {
+  console.log(data);
   return await makeApiCall(POST, data, ADD_DATA);
 }
 
