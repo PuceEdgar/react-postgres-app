@@ -15,7 +15,7 @@ const getItems = (request, response) => {
 
 const addItem = (request, response) => {
   const { type, place, amount, date, month, year, yearmonth } = request.body;
-
+  console.log(yearmonth);
   pool.query(
     "INSERT INTO spendingitems (type, place, amount, date, month, year, yearmonth) VALUES ($1, $2, $3, $4, $5, $6, $7)",
     [type, place, amount, date, month, year, yearmonth],
